@@ -33,7 +33,7 @@ jobs:
 
     - name: Build and Push Frontend Image
       run: |
-        docker build -t${{ secrets.DOCKER_USERNAME }}/frontend ./frontend
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend ./frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend
 
     # Step 5: Deploy to OVHcloud
