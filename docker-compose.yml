@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   db:
     image: mysql:8.0
@@ -15,21 +16,21 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
-    build:
-      context: ./backend
-    ports:
-      - "5000:5000"
+    image: ${{ secrets.DOCKER_USERNAME }}/backend
+    container_name: backend
     environment:
       DB_HOST: db
       DB_USER: appuser
       DB_PASSWORD: yourpassword
       DB_NAME: two_tier_app
+    ports:
+      - "5000:5000"
     depends_on:
       - db
 
   frontend:
-    build:
-      context: ./frontend
+    image: ${{ secrets.DOCKER_USERNAME }}/frontend
+    container_name: frontend
     ports:
       - "80:5000"
     depends_on:
