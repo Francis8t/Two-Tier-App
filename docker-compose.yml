@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: two_tier_app
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: yourpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: db
+      DB_USER: appuser
+      DB_PASSWORD: yourpassword
+      DB_NAME: two_tier_app
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:5000"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
