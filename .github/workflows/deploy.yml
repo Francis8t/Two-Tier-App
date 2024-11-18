@@ -36,6 +36,7 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend ./frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend
 
+
     # Step 5: Deploy to OVHcloud
     - name: Deploy to OVHcloud
       run: |
