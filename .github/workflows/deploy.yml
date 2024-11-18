@@ -41,16 +41,9 @@ jobs:
     - name: Deploy to OVHcloud
       run: |
         ssh -i ${{ secrets.OVH_SSH_KEY }} -o StrictHostKeyChecking=no ${{ secrets.OVH_USER }}@${{ secrets.OVH_IP }} << 'EOF'
-          set -e
-
-
+          
           cd /var/www/two-tier-app
-
-          # Pull the latest images
-          docker pull ${{ secrets.DOCKER_USERNAME }}/backend
-          docker pull ${{ secrets.DOCKER_USERNAME }}/frontend
-
-          # Update and restart the application
-          docker-compose down
+          docker-compose pull
           docker-compose up -d
         EOF
+
