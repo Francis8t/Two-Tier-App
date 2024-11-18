@@ -33,8 +33,8 @@ jobs:
 
     - name: Build and Push Frontend Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend ./frontend
-        docker push ${{ secrets.DOCKER_USERNAME }}/frontend
+        docker build -t francis8t/frontend ./frontend
+        docker push francis8t/frontend
 
 
     # Step 5: Deploy to OVHcloud
@@ -43,7 +43,7 @@ jobs:
         ssh -i ${{ secrets.OVH_SSH_KEY }} -o StrictHostKeyChecking=no ${{ secrets.OVH_USER }}@${{ secrets.OVH_IP }} << 'EOF'
           set -e
 
-          
+
           cd /var/www/two-tier-app
 
           # Pull the latest images
