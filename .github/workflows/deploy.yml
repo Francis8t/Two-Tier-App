@@ -41,10 +41,19 @@ jobs:
         docker build --progress=plain -t ${{ secrets.DOCKER_USERNAME }}/frontend ./frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend
 
-    # Step 7: Deploy to OVHcloud
+    # Step 7: Debug SSH Connection
+    - name: Debug SSH Connection
+      run: |
+        echo "${{ secrets.OVH_SSH_KEY }}" > ssh_key
+        chmod 600 ssh_key
+        ssh -i ssh_key -o StrictHostKeyChecking=no ${{ secrets.OVH_USER }}@${{ secrets.OVH_IP }} "echo SSH connection successful"
+
+    # Step 8: Deploy to OVHcloud
     - name: Deploy to OVHcloud
       run: |
-        ssh -i ${{ secrets.OVH_SSH_KEY }} -o StrictHostKeyChecking=no ${{ secrets.OVH_USER }}@${{ secrets.OVH_IP }} << 'EOF'
+        echo "${{ secrets.OVH_SSH_KEY }}" > ssh_key
+        chmod 600 ssh_key
+        ssh -i ssh_key -o StrictHostKeyChecking=no ${{ secrets.OVH_USER }}@${{ secrets.OVH_IP }} << 'EOF'
           cd /var/www/two-tier-app
           docker-compose pull
           docker-compose up -d
