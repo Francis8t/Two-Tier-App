@@ -22,7 +22,7 @@ app.get('/', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
+        
 app.listen(port, () => {
     console.log(`Backend running on port ${port}`);
 });
